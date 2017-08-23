@@ -13,6 +13,7 @@
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
+        
         NSMutableArray *BNRStockHoldingArr = [NSMutableArray array];
         
         BNRStockHolding *sh1 = [[BNRStockHolding alloc] init];
@@ -30,7 +31,6 @@ int main(int argc, const char * argv[]) {
         sh2.numShares = 90;
         sh2.symbol = @"ABC";
         
-        
         fsh1.purchasePrice = 2.30;
         fsh1.sharePrice = 4.50;
         fsh1.numShares = 40;
@@ -42,15 +42,33 @@ int main(int argc, const char * argv[]) {
         BNRStockHoldingArr[1] = sh2;
         BNRStockHoldingArr[2] = fsh1;
         
+        // Add 10 more stocks to the array
+        for (int i =0; i < 10; i++){
+            BNRStockHolding *sh = [[BNRStockHolding alloc] init];
+            sh.purchasePrice = i + 5;
+            sh.sharePrice = i + (6.93*i);
+            sh.numShares = i*10;
+            NSString *lowercaseSymb = [sh generateRandomString:3];
+            sh.symbol = [lowercaseSymb uppercaseString];
+            
+            [BNRStockHoldingArr addObject:sh];
+            
+        }
+        
         BNRPortfolio *portfolio = [[BNRPortfolio alloc] init];
         for (int i = 0; i< [BNRStockHoldingArr count]; i++){
             [portfolio addStock:BNRStockHoldingArr[i]];
         }
-        NSLog(@"Total Value in Portfolio: %f, Portfolio: %@", portfolio.totalValue, portfolio.holdings);
+        NSLog(@"Total Value in Portfolio: %f, Total Stocks: %lu, Portfolio: %@", portfolio.totalValue, (unsigned long)[portfolio.holdings count], portfolio.holdings);
         [portfolio removeStock:fsh1];
-        NSLog(@"Total Value in Portfolio: %f, Portfolio: %@", portfolio.totalValue, portfolio.holdings);
-
-
+        NSLog(@"Total Value in Portfolio (removed foreign stock): %f, Total Stocks: %lu, Portfolio: %@", portfolio.totalValue, [portfolio.holdings count], portfolio.holdings);
+        
+        NSArray *topThree = portfolio.topThree;
+        NSLog(@"Top Three: %@", topThree);
+        
+        NSArray *symbolSorted = portfolio.symbolSort;
+        NSLog(@"Symbol Sorted Portfolio: %@", symbolSorted);
+            
 //
 //        for (BNRStockHolding *sh in BNRStockHoldingArr){
 //            float cost = [sh costInDollars];
@@ -86,5 +104,7 @@ int main(int argc, const char * argv[]) {
 //            BNRSto
 //        }
     }
+    
+    
     return 0;
 }

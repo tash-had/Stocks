@@ -16,4 +16,8 @@
 
 - (void)addStock:(BNRStockHolding *)a;
 - (void)removeStock:(BNRStockHolding *)a;
+
+- (NSArray *)topThree;
+- (NSArray *)symbolSort;
+
 @end

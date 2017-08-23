@@ -20,19 +20,42 @@
     _holdings = [a mutableCopy];
 }
 - (void)addStock:(BNRStockHolding *)stock{
+    // Add stock 'stock' to _holdings
     if (!_holdings){
         _holdings = [[NSMutableArray alloc] init];
     }
     [_holdings addObject:stock];
 }
 - (void)removeStock:(BNRStockHolding *)a{
-    if (_holdings){
-        for (BNRStockHolding *stock in _holdings){
-            if (stock.symbol == a.symbol){
-                [_holdings removeObject:stock];
-            }
+    // Remove a stock (remove the stock that has the same symbol as 'a'
+    NSMutableArray *objsToRemove = [[NSMutableArray alloc] init];
+    for (BNRStockHolding *stock in _holdings){
+        if (stock.symbol == a.symbol){
+            [objsToRemove addObject:stock];
         }
     }
+    [_holdings removeObjectsInArray:objsToRemove];
+}
+- (NSArray *)topThree{
+    // Return array of top three stock holdings based on valueInDollars
+    NSArray *topThreeArr;
+    NSMutableArray *holdingsCpy = [_holdings mutableCopy];
+    NSSortDescriptor *stockValDesc = [NSSortDescriptor sortDescriptorWithKey:@"valueInDollars" ascending:NO];
+    [holdingsCpy sortUsingDescriptors:@[stockValDesc]];
+    
+    NSRange firstThree;
+    firstThree.location = 0;
+    firstThree.length = 3;
+    topThreeArr = [holdingsCpy subarrayWithRange:firstThree];
+    return topThreeArr;
+}
+
+- (NSArray *)symbolSort{
+    // Return array of holdings sorted in alphabetical order
+    NSMutableArray *holdingsCpy = [_holdings mutableCopy];
+    NSSortDescriptor *symbolDesc = [NSSortDescriptor sortDescriptorWithKey:@"symbol" ascending:YES];
+    [holdingsCpy sortUsingDescriptors:@[symbolDesc]];
+    return holdingsCpy;
 }
 - (float)totalValue{
     float sum = 0;

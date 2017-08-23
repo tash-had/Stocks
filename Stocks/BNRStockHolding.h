@@ -30,5 +30,5 @@
 
 - (float)costInDollars; // purchaseSharePrice * numberofShares
 - (float)valueInDollars; // currentSharePrice * numberofShares
-
+- (NSString *)generateRandomString:(int)len;
 @end

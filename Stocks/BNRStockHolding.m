@@ -35,4 +35,17 @@
 - (float)valueInDollars{
     return _sharePrice * _numShares;
 }
+
+- (NSString *)description{
+    return [NSString stringWithFormat:@"Stock: %@, Share Price: %f, Total Value in $: %f", self.symbol, self.sharePrice, self.valueInDollars];
+}
+NSString *letters = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+- (NSString*)generateRandomString:(int)num {
+    NSMutableString* string = [NSMutableString stringWithCapacity:num];
+    for (int i = 0; i < num; i++) {
+        [string appendFormat:@"%C", (unichar)('a' + arc4random_uniform(25))];
+    }
+    return string;
+}
 @end
